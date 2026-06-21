@@ -1,0 +1,21 @@
+{
+  "name": "買い物&暮らしのメモ帳",
+  "short_name": "暮らしメモ帳",
+  "description": "買い物、用事、暮らしのメモをまとめてチェックできるスマホ向けメモ帳です。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf7ef",
+  "theme_color": "#fbf7ef",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

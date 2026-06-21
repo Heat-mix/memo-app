@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#fbf7ef">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="暮らしメモ帳">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>買い物&暮らしのメモ帳</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="top-panel">
+        <div>
+          <p class="eyebrow">Kurashi memo</p>
+          <h1>買い物&暮らしのメモ帳</h1>
+        </div>
+        <div class="stats" aria-live="polite">
+          <span id="active-count">0件</span>
+        </div>
+      </header>
+
+      <nav class="view-tabs" aria-label="表示切り替え">
+        <button class="view-tab is-active" type="button" data-view="active">これから</button>
+        <button class="view-tab" type="button" data-view="done">完了済み</button>
+      </nav>
+
+      <section id="active-view" class="view-section">
+        <section class="input-panel" aria-labelledby="input-title">
+          <h2 id="input-title">今日のメモ</h2>
+
+          <div class="mode-tabs" aria-label="入力モード">
+            <button class="mode-tab is-active" type="button" data-mode="shopping">買い物</button>
+            <button class="mode-tab" type="button" data-mode="errand">用事</button>
+            <button class="mode-tab" type="button" data-mode="memo">メモ</button>
+          </div>
+
+          <label class="field-label" for="context-input" id="context-label">店名 任意</label>
+          <input id="context-input" type="text" autocomplete="off" placeholder="例：イオン、薬局、ローソン">
+
+          <label class="field-label" for="item-input" id="item-label">買うもの</label>
+          <textarea id="item-input" rows="4" autocomplete="off" placeholder="例：牛乳 卵 パン 洗剤"></textarea>
+
+          <p id="input-hint" class="input-hint">スペース、読点「、」、中点「・」、改行で区切れます。買い物は食べ物・日用品に自動で分けます。</p>
+          <button id="add-button" class="primary-button" type="button">一覧に追加</button>
+        </section>
+
+        <section class="list-panel" aria-labelledby="list-title">
+          <div class="list-header">
+            <h2 id="list-title">これから</h2>
+            <button id="finish-checked-button" type="button">チェックを完了</button>
+          </div>
+          <div id="active-list" class="category-list" aria-live="polite"></div>
+          <p id="active-empty" class="empty-message">まだ項目がありません。今日の買い物や用事を追加してください。</p>
+        </section>
+      </section>
+
+      <section id="done-view" class="view-section is-hidden">
+        <section class="summary-panel" aria-labelledby="summary-title">
+          <div>
+            <p class="eyebrow">Total</p>
+            <h2 id="summary-title">金額メモ</h2>
+          </div>
+          <div class="grand-total" aria-live="polite">
+            <span>合計</span>
+            <strong id="grand-total">0円</strong>
+          </div>
+        </section>
+
+        <section class="list-panel" aria-labelledby="done-title">
+          <div class="list-header">
+            <h2 id="done-title">完了済み</h2>
+            <button id="clear-done-button" type="button">記録を整理</button>
+          </div>
+          <div id="done-list" class="category-list" aria-live="polite"></div>
+          <p id="done-empty" class="empty-message">完了した項目がここに入り、あとから金額をメモできます。</p>
+        </section>
+      </section>
+    </main>
+
+    <template id="category-template">
+      <section class="category">
+        <div class="category-toggle">
+          <span class="category-heading">
+            <span class="category-icon" aria-hidden="true"></span>
+            <span class="category-name"></span>
+          </span>
+          <span class="category-count"></span>
+        </div>
+        <div class="store-list"></div>
+      </section>
+    </template>
+
+    <template id="active-item-template">
+      <li class="item">
+        <label>
+          <input class="done-check" type="checkbox">
+          <span class="item-text"></span>
+        </label>
+        <button class="finish-button" type="button">完了</button>
+      </li>
+    </template>
+
+    <template id="done-item-template">
+      <li class="item done-record">
+        <div class="done-item-main">
+          <span class="item-text"></span>
+          <span class="done-meta"></span>
+        </div>
+        <label class="amount-field">
+          <span>円</span>
+          <input class="amount-input" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
+        </label>
+        <div class="done-actions">
+          <button class="restore-button" type="button">戻す</button>
+          <button class="delete-button" type="button" aria-label="完全削除">
+            <span aria-hidden="true">🗑</span>
+          </button>
+        </div>
+      </li>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
