@@ -491,6 +491,20 @@ h2 {
   line-height: 1.7;
 }
 
+.version-footer {
+  margin: 18px 4px 0;
+  padding: 14px 6px 4px;
+  color: #8a7f74;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.version-footer p {
+  margin: 0;
+}
+
 .is-hidden {
   display: none;
 }

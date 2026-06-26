@@ -276,7 +276,7 @@ function render() {
   activeEmpty.classList.toggle("is-hidden", activeItems.length > 0);
   doneEmpty.classList.toggle("is-hidden", doneItems.length > 0);
 
-  renderCategoryList(activeList, activeItems, "active");
+  renderStoreList(activeList, activeItems);
   renderCategoryList(doneList, doneItems, "done");
   renderTotalsOnly();
 }
@@ -341,6 +341,50 @@ function renderCategoryList(container, listItems, variant) {
     });
 
     container.append(categoryNode);
+  });
+}
+
+function renderStoreList(container, listItems) {
+  container.replaceChildren();
+
+  groupByContext(listItems).forEach((contextGroup) => {
+    const storeNode = categoryTemplate.content.firstElementChild.cloneNode(true);
+    const icon = storeNode.querySelector(".category-icon");
+    const name = storeNode.querySelector(".category-name");
+    const count = storeNode.querySelector(".category-count");
+    const categoryListNode = storeNode.querySelector(".store-list");
+
+    storeNode.dataset.category = "store";
+    icon.textContent = "🏬";
+    name.textContent = contextGroup.context || "店指定なし";
+    count.textContent = `${contextGroup.items.length}件`;
+
+    categories.forEach((category) => {
+      const categoryItems = contextGroup.items.filter((item) => item.category === category.id);
+      if (categoryItems.length === 0) return;
+
+      const groupNode = document.createElement("section");
+      const groupHeader = document.createElement("div");
+      const groupTitle = document.createElement("span");
+      const groupCount = document.createElement("span");
+      const list = document.createElement("ul");
+
+      groupNode.className = "store-group";
+      groupHeader.className = "store-name";
+      list.className = "items";
+      groupTitle.textContent = category.name;
+      groupCount.textContent = `${categoryItems.length}件`;
+      groupHeader.append(groupTitle, groupCount);
+
+      categoryItems.forEach((item) => {
+        list.append(createActiveItem(item));
+      });
+
+      groupNode.append(groupHeader, list);
+      categoryListNode.append(groupNode);
+    });
+
+    container.append(storeNode);
   });
 }
 
