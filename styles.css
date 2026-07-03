@@ -196,6 +196,7 @@ h2 {
 .primary-button,
 #finish-checked-button,
 #clear-done-button,
+#reset-all-button,
 .finish-button,
 .restore-button,
 .delete-button {
@@ -352,7 +353,7 @@ h2 {
   font-weight: 800;
 }
 
-.store-name span:first-child {
+.store-name > span:first-child {
   display: inline-flex;
   align-items: center;
   max-width: 70%;
@@ -364,13 +365,13 @@ h2 {
   overflow-wrap: anywhere;
 }
 
-.store-name span:first-child::before {
+.store-name > span:first-child::before {
   content: "#";
   margin-right: 3px;
   color: #c58f5a;
 }
 
-.store-name span:last-child {
+.store-name > span:last-child {
   display: inline-grid;
   min-width: 32px;
   min-height: 32px;
@@ -380,6 +381,30 @@ h2 {
   color: #66806a;
   font-size: 0.8rem;
   font-weight: 900;
+}
+
+.category-group .store-name > span:first-child::before {
+  content: none;
+}
+
+.category-group[data-category="food"] .store-name > span:first-child {
+  background: #fbe5d2;
+}
+
+.category-group[data-category="daily"] .store-name > span:first-child {
+  background: #dfeee7;
+}
+
+.category-group[data-category="shoppingOther"] .store-name > span:first-child {
+  background: #efe5ce;
+}
+
+.category-group[data-category="errand"] .store-name > span:first-child {
+  background: #e8e3f4;
+}
+
+.category-group[data-category="memo"] .store-name > span:first-child {
+  background: #dce8ef;
 }
 
 .items {
@@ -503,6 +528,16 @@ h2 {
 
 .version-footer p {
   margin: 0;
+}
+
+#reset-all-button {
+  min-height: 40px;
+  margin-bottom: 12px;
+  padding: 0 16px;
+  border: 1px solid #ead2ca;
+  background: #fff8f5;
+  color: var(--danger);
+  font-size: 0.82rem;
 }
 
 .is-hidden {

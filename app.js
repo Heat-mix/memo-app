@@ -70,6 +70,7 @@ const activeEmpty = document.querySelector("#active-empty");
 const doneEmpty = document.querySelector("#done-empty");
 const finishCheckedButton = document.querySelector("#finish-checked-button");
 const clearDoneButton = document.querySelector("#clear-done-button");
+const resetAllButton = document.querySelector("#reset-all-button");
 const grandTotal = document.querySelector("#grand-total");
 const categoryTemplate = document.querySelector("#category-template");
 const activeItemTemplate = document.querySelector("#active-item-template");
@@ -259,6 +260,18 @@ function clearAmountlessDone() {
   render();
 }
 
+function resetAllItems() {
+  const confirmed = window.confirm("すべてのメモを削除します。よろしいですか？");
+  if (!confirmed) return;
+
+  items = [];
+  localStorage.removeItem(STORAGE_KEY);
+  input.value = "";
+  contextInput.value = "";
+  setView("active");
+  render();
+}
+
 function parseAmount(amount) {
   const value = Number(amount);
   return Number.isFinite(value) && value > 0 ? value : 0;
@@ -369,10 +382,11 @@ function renderStoreList(container, listItems) {
       const groupCount = document.createElement("span");
       const list = document.createElement("ul");
 
-      groupNode.className = "store-group";
+      groupNode.className = "store-group category-group";
+      groupNode.dataset.category = category.id;
       groupHeader.className = "store-name";
       list.className = "items";
-      groupTitle.textContent = category.name;
+      groupTitle.textContent = `${category.icon} ${category.name}`;
       groupCount.textContent = `${categoryItems.length}件`;
       groupHeader.append(groupTitle, groupCount);
 
@@ -450,6 +464,7 @@ document.querySelectorAll(".view-tab").forEach((button) => {
 addButton.addEventListener("click", addItems);
 finishCheckedButton.addEventListener("click", finishChecked);
 clearDoneButton.addEventListener("click", clearAmountlessDone);
+resetAllButton.addEventListener("click", resetAllItems);
 
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
