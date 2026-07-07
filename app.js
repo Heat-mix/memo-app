@@ -1,7 +1,8 @@
 const STORAGE_KEY = "kurashi-memo-items-v2";
+const THEME_STORAGE_KEY = "kurashi-memo-theme-v1";
 
 const categories = [
-  { id: "food", name: "食べ物", icon: "🍎" },
+  { id: "food", name: "食料品", icon: "🛒" },
   { id: "daily", name: "日用品", icon: "🧴" },
   { id: "shoppingOther", name: "その他買い物", icon: "🛍" },
   { id: "errand", name: "用事", icon: "📍" },
@@ -26,7 +27,8 @@ const foodWords = [
   "ビスケット", "ポテチ", "ポテトチップス", "ドーナツ", "ドーナッツ",
   "ペットボトル飲料", "スポーツ飲料", "ポカリ", "ポカリスエット", "アクエリ", "アクエリアス", "コーラ", "ペプシ", "炭酸水", "ウーロン茶",
   "パイナップル", "スイカ", "さくらんぼ", "スモモ",
-  "焼きそば", "冷やし中華", "冷麺", "じゃじゃ麺"
+  "焼きそば", "冷やし中華", "冷麺", "じゃじゃ麺",
+  "玉菜", "菜葉", "なっぱ", "菜っぱ"
 ];
 
 const dailyWords = [
@@ -47,7 +49,7 @@ const modeConfig = {
     contextPlaceholder: "例：イオン、薬局、ローソン",
     itemLabel: "買うもの",
     itemPlaceholder: "例：牛乳 卵 パン 洗剤",
-    hint: "スペース、読点「、」、中点「・」、改行で区切れます。買い物は食べ物・日用品に自動で分けます。"
+    hint: "スペース、読点「、」、中点「・」、改行で区切れます。買い物は食料品・日用品に自動で分けます。"
   },
   errand: {
     contextLabel: "場所 任意",
@@ -66,6 +68,7 @@ const modeConfig = {
 };
 
 const input = document.querySelector("#item-input");
+const inputPanel = document.querySelector(".input-panel");
 const contextInput = document.querySelector("#context-input");
 const contextLabel = document.querySelector("#context-label");
 const itemLabel = document.querySelector("#item-label");
@@ -83,6 +86,18 @@ const grandTotal = document.querySelector("#grand-total");
 const categoryTemplate = document.querySelector("#category-template");
 const activeItemTemplate = document.querySelector("#active-item-template");
 const doneItemTemplate = document.querySelector("#done-item-template");
+const themeButtons = document.querySelectorAll(".theme-swatch");
+
+const themes = {
+  beige: "#fbf7ef",
+  pink: "#fff4f5",
+  purple: "#f8f5fc",
+  blue: "#f1f8fb",
+  emerald: "#f0f8f4",
+  gray: "#f5f5f4",
+  orange: "#fff5eb",
+  indigo: "#f2f4f9"
+};
 
 let items = loadItems();
 let currentMode = "shopping";
@@ -98,6 +113,31 @@ function loadItems() {
 
 function saveItems() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
+function loadTheme() {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    return Object.prototype.hasOwnProperty.call(themes, stored) ? stored : "beige";
+  } catch {
+    return "beige";
+  }
+}
+
+function setTheme(theme, persist = true) {
+  const selectedTheme = Object.prototype.hasOwnProperty.call(themes, theme) ? theme : "beige";
+  document.body.dataset.theme = selectedTheme;
+  document.querySelector('meta[name="theme-color"]').content = themes[selectedTheme];
+
+  themeButtons.forEach((button) => {
+    const selected = button.dataset.theme === selectedTheme;
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+
+  if (persist) {
+    localStorage.setItem(THEME_STORAGE_KEY, selectedTheme);
+  }
 }
 
 function normalizeText(text) {
@@ -188,6 +228,7 @@ function addItems() {
 
 function setMode(mode) {
   currentMode = mode;
+  inputPanel.dataset.mode = mode;
   document.querySelectorAll(".mode-tab").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.mode === mode);
   });
@@ -469,6 +510,10 @@ document.querySelectorAll(".view-tab").forEach((button) => {
   button.addEventListener("click", () => setView(button.dataset.view));
 });
 
+themeButtons.forEach((button) => {
+  button.addEventListener("click", () => setTheme(button.dataset.theme));
+});
+
 addButton.addEventListener("click", addItems);
 finishCheckedButton.addEventListener("click", finishChecked);
 clearDoneButton.addEventListener("click", clearAmountlessDone);
@@ -480,5 +525,6 @@ input.addEventListener("keydown", (event) => {
   }
 });
 
+setTheme(loadTheme(), false);
 setMode(currentMode);
 render();
