@@ -376,6 +376,16 @@ h2 {
   box-shadow: 0 -6px 13px rgba(89, 68, 48, 0.09);
 }
 
+.mode-tab.is-active::after {
+  content: "";
+  position: absolute;
+  right: 1px;
+  bottom: -3px;
+  left: 1px;
+  height: 4px;
+  background: linear-gradient(135deg, var(--mode-wash), var(--field-bg));
+}
+
 .mode-tab[data-mode="shopping"].is-active { color: #a95745; }
 .mode-tab[data-mode="errand"].is-active { color: #735f91; }
 .mode-tab[data-mode="memo"].is-active { color: #4f7486; }
