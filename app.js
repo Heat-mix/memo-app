@@ -65,7 +65,7 @@ const modeConfig = {
   },
   errand: {
     contextLabel: "場所 任意",
-    contextPlaceholder: "例：ローソン、郵便局、病院",
+    contextPlaceholder: "例：市役所、郵便局、病院",
     itemLabel: "やること",
     itemPlaceholder: "例：料金支払い 荷物受け取り",
     hint: "用事は分類を固定します。場所を入れると、その用事だけ場所タグになります。"
@@ -102,13 +102,13 @@ const themeButtons = document.querySelectorAll(".theme-swatch");
 
 const themes = {
   beige: "#fbf7ef",
-  pink: "#fff4f5",
-  purple: "#f8f5fc",
-  blue: "#f1f8fb",
-  emerald: "#f0f8f4",
-  gray: "#f5f5f4",
-  orange: "#fff5eb",
-  indigo: "#f2f4f9"
+  pink: "#fff2f7",
+  purple: "#f7f0ff",
+  blue: "#eef9ff",
+  emerald: "#effcf6",
+  gray: "#fff9df",
+  orange: "#fff3e8",
+  indigo: "#eef5ff"
 };
 
 let items = loadItems();
