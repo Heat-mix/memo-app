@@ -86,6 +86,8 @@ const contextLabel = document.querySelector("#context-label");
 const itemLabel = document.querySelector("#item-label");
 const inputHint = document.querySelector("#input-hint");
 const addButton = document.querySelector("#add-button");
+const modeFrame = document.querySelector(".mode-frame");
+const modeOutlinePath = document.querySelector("#mode-outline-path");
 const activeCount = document.querySelector("#active-count");
 const activeList = document.querySelector("#active-list");
 const doneList = document.querySelector("#done-list");
@@ -251,6 +253,49 @@ function setMode(mode) {
   itemLabel.textContent = config.itemLabel;
   input.placeholder = config.itemPlaceholder;
   inputHint.textContent = config.hint;
+  requestAnimationFrame(updateModeOutline);
+}
+
+function updateModeOutline() {
+  const activeTab = document.querySelector(".mode-tab.is-active");
+  if (!modeFrame || !modeOutlinePath || !activeTab) return;
+
+  const frameBox = modeFrame.getBoundingClientRect();
+  const tabBox = activeTab.getBoundingClientRect();
+  const contentBox = document.querySelector(".mode-content").getBoundingClientRect();
+
+  const w = Math.round(frameBox.width);
+  const h = Math.round(frameBox.height);
+  const x = Math.round(tabBox.left - frameBox.left);
+  const tabW = Math.round(tabBox.width);
+  const y = Math.round(contentBox.top - frameBox.top);
+  const r = 14;
+  const tabR = 14;
+  const tabRight = x + tabW;
+  const leftJoin = Math.max(r, x - tabR);
+  const rightJoin = Math.min(w - r, tabRight + tabR);
+
+  modeOutlinePath.ownerSVGElement.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  modeOutlinePath.setAttribute("d", [
+    `M ${r} ${y}`,
+    `H ${leftJoin}`,
+    `Q ${x} ${y} ${x} ${y - tabR}`,
+    `V ${tabR}`,
+    `Q ${x} 0 ${x + tabR} 0`,
+    `H ${tabRight - tabR}`,
+    `Q ${tabRight} 0 ${tabRight} ${tabR}`,
+    `V ${y - tabR}`,
+    `Q ${tabRight} ${y} ${rightJoin} ${y}`,
+    `H ${w - r}`,
+    `Q ${w} ${y} ${w} ${y + r}`,
+    `V ${h - r}`,
+    `Q ${w} ${h} ${w - r} ${h}`,
+    `H ${r}`,
+    `Q 0 ${h} 0 ${h - r}`,
+    `V ${y + r}`,
+    `Q 0 ${y} ${r} ${y}`,
+    "Z"
+  ].join(" "));
 }
 
 function setView(view) {
@@ -537,6 +582,13 @@ input.addEventListener("keydown", (event) => {
   }
 });
 
+window.addEventListener("resize", updateModeOutline);
+
+if (window.ResizeObserver && modeFrame) {
+  new ResizeObserver(updateModeOutline).observe(modeFrame);
+}
+
 setTheme(loadTheme(), false);
 setMode(currentMode);
 render();
+requestAnimationFrame(updateModeOutline);

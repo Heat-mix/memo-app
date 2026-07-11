@@ -49,21 +49,27 @@
         <section class="input-panel" aria-labelledby="input-title">
           <h2 id="input-title">今日のメモ</h2>
 
-          <div class="mode-tabs" aria-label="入力モード">
-            <button class="mode-tab is-active" type="button" data-mode="shopping">買い物</button>
-            <button class="mode-tab" type="button" data-mode="errand">用事</button>
-            <button class="mode-tab" type="button" data-mode="memo">メモ</button>
-          </div>
+          <div class="mode-frame">
+            <svg class="mode-outline" aria-hidden="true">
+              <path id="mode-outline-path"></path>
+            </svg>
 
-          <div class="mode-content">
-            <label class="field-label" for="context-input" id="context-label">店名 任意</label>
-            <input id="context-input" type="text" autocomplete="off" placeholder="例：イオン、薬局、ローソン">
+            <div class="mode-tabs" aria-label="入力モード">
+              <button class="mode-tab is-active" type="button" data-mode="shopping">買い物</button>
+              <button class="mode-tab" type="button" data-mode="errand">用事</button>
+              <button class="mode-tab" type="button" data-mode="memo">メモ</button>
+            </div>
 
-            <label class="field-label" for="item-input" id="item-label">買うもの</label>
-            <textarea id="item-input" rows="4" autocomplete="off" placeholder="例：牛乳 卵 パン 洗剤"></textarea>
+            <div class="mode-content">
+              <label class="field-label" for="context-input" id="context-label">店名 任意</label>
+              <input id="context-input" type="text" autocomplete="off" placeholder="例：イオン、薬局、ローソン">
 
-            <p id="input-hint" class="input-hint">スペース、読点「、」、中点「・」、改行で区切れます。買い物は食料品・日用品に自動で分けます。</p>
-            <button id="add-button" class="primary-button" type="button">一覧に追加</button>
+              <label class="field-label" for="item-input" id="item-label">買うもの</label>
+              <textarea id="item-input" rows="4" autocomplete="off" placeholder="例：牛乳 卵 パン 洗剤"></textarea>
+
+              <p id="input-hint" class="input-hint">スペース、読点「、」、中点「・」、改行で区切れます。買い物は食料品・日用品に自動で分けます。</p>
+              <button id="add-button" class="primary-button" type="button">一覧に追加</button>
+            </div>
           </div>
         </section>
 
@@ -101,8 +107,8 @@
 
       <footer class="version-footer" aria-label="バージョン情報">
         <button id="reset-all-button" type="button">すべてリセット</button>
-        <p>Version <span id="app-version">0.3.4-4</span></p>
-        <p>最終更新 <time datetime="2026-07-10T11:32:00+09:00">2026/07/10 11:32</time></p>
+        <p>Version <span id="app-version">0.3.4-6</span></p>
+        <p>最終更新 <time datetime="2026-07-11T12:31:00+09:00">2026/07/11 12:31</time></p>
       </footer>
     </main>
 
