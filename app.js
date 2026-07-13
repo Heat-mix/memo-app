@@ -272,30 +272,42 @@ function updateModeOutline() {
   const r = 14;
   const tabR = 14;
   const tabRight = x + tabW;
+
+  // When the active tab sits flush against the frame edge (leftmost/rightmost
+  // tab), there isn't enough room for the usual "corner curve + flat shelf +
+  // tab curve" construction, and it collapses into a hard corner. In that
+  // case, merge both curves into one continuous S-curve (same radius as the
+  // normal join) instead, so every tab position gets the same smooth join.
+  const leftMerged = x - tabR < r;
+  const rightMerged = tabRight + tabR > w - r;
   const leftJoin = Math.max(r, x - tabR);
   const rightJoin = Math.min(w - r, tabRight + tabR);
 
+  const startX = leftMerged ? 0 : r;
+  const startY = leftMerged ? y + tabR : y;
+
   modeOutlinePath.ownerSVGElement.setAttribute("viewBox", `0 0 ${w} ${h}`);
   modeOutlinePath.setAttribute("d", [
-    `M ${r} ${y}`,
-    `H ${leftJoin}`,
-    `Q ${x} ${y} ${x} ${y - tabR}`,
+    `M ${startX} ${startY}`,
+    leftMerged
+      ? `C 0 ${y} ${x} ${y} ${x} ${y - tabR}`
+      : `H ${leftJoin}` + ` Q ${x} ${y} ${x} ${y - tabR}`,
     `V ${tabR}`,
     `Q ${x} 0 ${x + tabR} 0`,
     `H ${tabRight - tabR}`,
     `Q ${tabRight} 0 ${tabRight} ${tabR}`,
     `V ${y - tabR}`,
-    `Q ${tabRight} ${y} ${rightJoin} ${y}`,
-    `H ${w - r}`,
-    `Q ${w} ${y} ${w} ${y + r}`,
+    rightMerged
+      ? `C ${tabRight} ${y} ${w} ${y} ${w} ${y + tabR}`
+      : `Q ${tabRight} ${y} ${rightJoin} ${y}` + ` H ${w - r}` + ` Q ${w} ${y} ${w} ${y + r}`,
     `V ${h - r}`,
     `Q ${w} ${h} ${w - r} ${h}`,
     `H ${r}`,
     `Q 0 ${h} 0 ${h - r}`,
-    `V ${y + r}`,
-    `Q 0 ${y} ${r} ${y}`,
+    `V ${leftMerged ? y + tabR : y + r}`,
+    leftMerged ? "" : `Q 0 ${y} ${r} ${y}`,
     "Z"
-  ].join(" "));
+  ].filter(Boolean).join(" "));
 }
 
 function setView(view) {
