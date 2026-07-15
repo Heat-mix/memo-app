@@ -170,15 +170,28 @@ function normalizeText(text) {
   return text.trim().toLowerCase();
 }
 
-function includesAny(text, words) {
+function findLongestMatch(text, categoryWords) {
   const normalized = normalizeText(text);
-  return words.some((word) => normalized.includes(word.toLowerCase()));
+  let bestMatch = null;
+
+  categoryWords.forEach((categoryWord) => {
+    categoryWord.words.forEach((word) => {
+      if (!normalized.includes(word.toLowerCase())) return;
+      if (!bestMatch || word.length > bestMatch.word.length) {
+        bestMatch = { category: categoryWord.category, word };
+      }
+    });
+  });
+
+  return bestMatch;
 }
 
 function classifyShopping(text) {
-  if (includesAny(text, foodWords)) return "food";
-  if (includesAny(text, dailyWords)) return "daily";
-  return "shoppingOther";
+  const match = findLongestMatch(text, [
+    { category: "food", words: foodWords },
+    { category: "daily", words: dailyWords }
+  ]);
+  return match ? match.category : "shoppingOther";
 }
 
 function cleanContext(text) {
