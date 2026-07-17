@@ -4,7 +4,9 @@ const THEME_STORAGE_KEY = "kurashi-memo-theme-v1";
 const categories = [
   { id: "food", name: "食料品", icon: "🛒" },
   { id: "daily", name: "日用品", icon: "🧴" },
-  { id: "shoppingOther", name: "その他買い物", icon: "🛍" },
+  { id: "cosmeticPersonalCare", name: "化粧品・パーソナルケア", icon: "💄" },
+  { id: "medicalHygiene", name: "医薬品・衛生用品", icon: "🩹" },
+  { id: "shoppingOther", name: "暮らし用品", icon: "🛍" },
   { id: "errand", name: "用事", icon: "📍" },
   { id: "memo", name: "メモ", icon: "✎" }
 ];
@@ -120,7 +122,6 @@ const foodWords = [
   "缶詰", "ジャム", "マーガリン",
 
   // 分類確認用
-  "仁丹"
 ];
 
 const dailyWords = [
@@ -142,30 +143,38 @@ const dailyWords = [
   "シャンプー", "リンス", "コンディショナー", "ボディソープ", "石けん", "石鹸",
 
   // オーラルケア用品
-  "歯磨き", "歯みがき", "歯ブラシ", "うがい薬",
+  "歯磨き", "歯みがき", "歯ブラシ",
 
   // 手洗い・衛生用品
-  "ハンドソープ", "除菌シート", "除菌スプレー", "ウェットティッシュ", "綿棒", "消毒液", "消毒スプレー",
+  "ハンドソープ",
 
-  // 医薬品・衛生用品候補
-  "マスク", "薬", "ばんそうこう", "絆創膏", "口拭き",
-
-  // 生理用品
-  "ウィスパー", "アンネパッド", "ナプキン",
-
-  // ベビー用品
-  "おしり拭き", "ムーニーマン", "マミーポコ", "つよいこ", "はいはい", "メリーズ", "おむつ", "パンパース", "粉ミルク",
-
-  // 化粧品・パーソナルケア候補
-  "コットン", "洗顔", "化粧水", "乳液", "ハンドクリーム", "保湿クリーム", "日焼け止め", "カミソリ", "シェービング",
+  // ベビー食品・分類保留
+  "つよいこ", "はいはい", "粉ミルク",
 
   // 電池・火まわり・生活用品
   "電池", "ライター", "チャッカマン", "電球",
 
   // 防虫・季節用品
   "防虫剤", "虫よけ", "殺虫剤", "保冷バッグ"
+];
 
-  // 分類確認用
+const cosmeticPersonalCareWords = [
+  // 化粧品・パーソナルケア
+  "コットン", "洗顔", "化粧水", "乳液", "ハンドクリーム", "保湿クリーム", "日焼け止め", "カミソリ", "シェービング"
+];
+
+const medicalHygieneWords = [
+  // 医薬品
+  "薬", "うがい薬", "仁丹",
+
+  // 救急・衛生用品
+  "マスク", "ばんそうこう", "絆創膏", "口拭き", "除菌シート", "除菌スプレー", "ウェットティッシュ", "綿棒", "消毒液", "消毒スプレー",
+
+  // 生理用品
+  "ウィスパー", "アンネパッド", "ナプキン",
+
+  // ベビー衛生用品
+  "おしり拭き", "ムーニーマン", "マミーポコ", "メリーズ", "おむつ", "パンパース"
 ];
 
 const stores = [
@@ -302,7 +311,9 @@ function findLongestMatch(text, categoryWords) {
 function classifyShopping(text) {
   const match = findLongestMatch(text, [
     { category: "food", words: foodWords },
-    { category: "daily", words: dailyWords }
+    { category: "daily", words: dailyWords },
+    { category: "cosmeticPersonalCare", words: cosmeticPersonalCareWords },
+    { category: "medicalHygiene", words: medicalHygieneWords }
   ]);
   return match ? match.category : "shoppingOther";
 }
